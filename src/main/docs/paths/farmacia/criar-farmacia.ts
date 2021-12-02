@@ -1,5 +1,5 @@
 export const criarFarmaciaPath = {
-    put: {
+    post: {
         tags: ['Farmacia'],
         summary: 'API para criar farmacia',
         requestBody: {

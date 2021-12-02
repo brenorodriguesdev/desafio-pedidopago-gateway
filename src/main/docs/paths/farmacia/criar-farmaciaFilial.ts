@@ -1,5 +1,5 @@
 export const criarFarmaciaFilialPath = {
-    put: {
+    post: {
         tags: ['Farmacia'],
         summary: 'API para criar farmacia filial',
         requestBody: {
