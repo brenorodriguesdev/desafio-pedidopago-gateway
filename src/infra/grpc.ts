@@ -4,7 +4,7 @@ const protoLoader = require('@grpc/proto-loader')
 const path = require('path')
 
 export class GRPC implements GrpcClient {
-    async call(proto: string, connection: string, service: string, func: string, payload: any, metadata: any): Promise<any> {
+    async call(proto: string, connection: string, service: string, func: string, payload?: any, metadata?: any): Promise<any> {
 
         const protoObject = protoLoader.loadSync(path.resolve(__dirname, '/protos/', proto))
         const protoLoaded = grpc.loadPackageDefinition(protoObject)
