@@ -1,4 +1,3 @@
-import { AtualizarProdutoService } from "../../../../data/services/produto/atualizar-produto"
 import { BuscarProdutoService } from "../../../../data/services/produto/buscar-produto"
 import { GRPC } from "../../../../infra/grpc"
 import { Controller } from "../../../../presentation/contracts/controller"
