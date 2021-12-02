@@ -2,7 +2,6 @@ import { CriarProdutoModel } from "../../../domain/models/produto/criar-produtos
 import { IngredienteModel } from "../../../domain/models/produto/ingrediente"
 import { ProdutoModel, ProdutosModel } from "../../../domain/models/produto/produto"
 import { GrpcClient } from "../../contracts/grpc-client"
-import { CriarProdutoService } from "./criar-produto"
 import { CriarProdutosService } from "./criar-produtos"
 
 interface SutTypes {
@@ -75,7 +74,7 @@ describe('CriarProdutos Service', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    test('Garantir que se ocorrer tudo corretamente o serviço retornará um produto', async () => {
+    test('Garantir que se ocorrer tudo corretamente o serviço retornará produtos', async () => {
         const { sut } = makeSut()
         const produtos = await sut.criar([makeCriarProduto(), makeCriarProduto()])
         expect(produtos).toEqual(makeProdutos())
