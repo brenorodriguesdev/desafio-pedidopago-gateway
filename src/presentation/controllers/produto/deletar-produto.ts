@@ -1,11 +1,11 @@
-import { BuscarProdutoUseCase } from "../../../domain/useCases/produto/buscar-produto"
+import { DeletarProdutoUseCase } from "../../../domain/useCases/produto/deletar-produto"
 import { Validator } from "../../../validation/contracts/validator"
 import { Controller } from "../../contracts/controller"
 import { HttpRequest, HttpResponse } from "../../contracts/http"
-import { badRequest, ok } from "../../contracts/http-helper"
+import { badRequest, noContent } from "../../contracts/http-helper"
 
-export class BuscarProdutoController implements Controller {
-    constructor (private readonly validator: Validator, private readonly buscarProdutoUseCase: BuscarProdutoUseCase) {}
+export class DeletarProdutoController implements Controller {
+    constructor (private readonly validator: Validator, private readonly deletarProdutoUseCase: DeletarProdutoUseCase) {}
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
             const error = this.validator.validate(httpRequest.params)
@@ -15,9 +15,9 @@ export class BuscarProdutoController implements Controller {
 
             const { id } = httpRequest.params
             
-            const produto = await this.buscarProdutoUseCase.buscar(id)
+            await this.deletarProdutoUseCase.deletar(id)
 
-            return ok(produto)
+            return noContent()
         } catch (error) {
             return badRequest(error)
         }
