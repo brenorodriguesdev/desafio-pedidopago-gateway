@@ -4,7 +4,7 @@ import { Controller } from "../../contracts/controller"
 import { HttpRequest, HttpResponse } from "../../contracts/http"
 import { badRequest, ok } from "../../contracts/http-helper"
 
-export class ClonarProdutoController implements Controller {
+export class CriarProdutoController implements Controller {
     constructor(private readonly validator: Validator, private readonly criarProdutoUseCase: CriarProdutoUseCase) { }
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
