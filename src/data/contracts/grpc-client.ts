@@ -1,3 +1,3 @@
 export interface GrpcClient {
-    call(func: string, payload: any, metadata: any): Promise<any>
+    call(proto: string, func: string, payload: any, metadata: any): Promise<any>
 }
