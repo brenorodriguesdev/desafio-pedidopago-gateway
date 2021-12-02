@@ -4,7 +4,7 @@ import schemas from './schemas'
 export default {
   openapi: '3.0.0',
   info: {
-    title: 'Desafio Traux API',
+    title: 'Desafio PedidoPago API',
     version: '1.0.0'
   },
   servers: [{
