@@ -5,7 +5,16 @@ import {
     criarProdutoPath, 
     criarProdutosPath, 
     deletarProdutoPath, 
-    listarProdutosPath 
+    listarProdutosPath,
+    atualizarFarmaciaPath,
+    buscarFarmaciaPath,
+    criarFarmaciaPath,
+    criarFarmaciaFilialPath,
+    criarFarmaciaSedePath,
+    deletarFarmaciaPath,
+    deletarFarmaciaFilialPath,
+    listarFarmaciasPath,
+    listarFarmaciasSedesPath
 } from "./paths/";
 
 export default {
@@ -16,4 +25,13 @@ export default {
     '/criarProdutos': criarProdutosPath,
     '/deletarProduto/{id}': deletarProdutoPath,
     '/listarProdutos': listarProdutosPath,
+    '/atualizarFarmacia': atualizarFarmaciaPath,
+    '/buscarFarmacia/{id}': buscarFarmaciaPath,
+    '/criarFarmacia': criarFarmaciaPath,
+    '/criarFarmaciaFilial': criarFarmaciaFilialPath,
+    '/criarFarmaciaSede': criarFarmaciaSedePath,
+    '/deletarFarmacia/{id}': deletarFarmaciaPath,
+    '/deletarFarmaciaFilial/{id}': deletarFarmaciaFilialPath,
+    '/listarFarmacias': listarFarmaciasPath,
+    '/listarFarmaciasSedes': listarFarmaciasSedesPath,
 }

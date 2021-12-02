@@ -13,6 +13,10 @@ export default {
   tags: [{
     name: 'Produto',
     description: 'APIs de Produto',
+  },
+  {
+    name: 'Farmacia',
+    description: 'APIs de Farmacia',
   }],
   paths,
   schemas
