@@ -5,6 +5,6 @@ import { GrpcClient } from "../../contracts/grpc-client";
 export class AtualizarFarmaciaService implements AtualizarFarmaciaUseCase {
     constructor (private readonly grpcClient: GrpcClient) {}
     async atualizar(data: UpdateFarmaciaModel): Promise<void | Error> {
-        await this.grpcClient.call('produto.proto',process.env.GRPC_CONNECTION_PRODUTO, 'ProdutoService', 'atualizar', data)
+        await this.grpcClient.call('farmacia.proto',process.env.GRPC_CONNECTION_FARMACIA, 'FarmaciaService', 'atualizar', data)
     }
 }
