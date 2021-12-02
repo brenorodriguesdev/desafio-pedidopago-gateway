@@ -77,7 +77,7 @@ message FarmaciasModel {
 message FarmaciaSedeModel {
     int32 id = 1;
     FarmaciaModel farmacia = 2;
-    repeated FarmaciaModel filias = 1;
+    repeated FarmaciaModel filias = 3;
 }
 
 message FarmaciasSedesModel {
