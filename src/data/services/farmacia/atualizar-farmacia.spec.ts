@@ -45,4 +45,11 @@ describe('AtualizarFarmacia Service', () => {
         await sut.atualizar(data)
         expect(callSpy).toHaveBeenCalledWith('farmacia.proto', process.env.GRPC_CONNECTION_FARMACIA, 'FarmaciaService', 'atualizar', data)
     })
+
+    test('Garantir que se o call retornar uma exceção o serviço repassará a exceção', async () => {
+        const { sut, grpcClient } = makeSut()
+        jest.spyOn(grpcClient, 'call').mockImplementationOnce(() => { throw new Error() })
+        const promise = sut.atualizar(makeData())
+        await expect(promise).rejects.toThrow()
+      })
 })
