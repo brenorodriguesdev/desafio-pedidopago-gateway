@@ -1,16 +1,15 @@
-import { FarmaciaModel } from "../../../domain/models/farmacia/farmacia"
 import { FarmaciaSedeModel } from "../../../domain/models/farmacia/farmaciaSede"
-import { CriarFarmaciaSedeUseCase } from "../../../domain/useCases/farmacia/criar-farmaciaSede"
+import { DeletarFarmaciaUseCase } from "../../../domain/useCases/farmacia/deletar-farmacia"
 import { Validator } from "../../../validation/contracts/validator"
 import { HttpRequest } from "../../contracts/http"
-import { badRequest, created } from "../../contracts/http-helper"
-import { CriarFarmaciaSedeController } from "./criar-farmaciaSede"
+import { badRequest, noContent } from "../../contracts/http-helper"
+import { DeletarFarmaciaController } from "./deletar-farmacia"
 
 
 interface SutTypes {
     validator: Validator
-    criarFarmaciaSedeUseCase: CriarFarmaciaSedeUseCase
-    sut: CriarFarmaciaSedeController
+    deletarFarmaciaUseCase: DeletarFarmaciaUseCase
+    sut: DeletarFarmaciaController
 }
 
 const makeValidator = (): Validator => {
@@ -22,45 +21,29 @@ const makeValidator = (): Validator => {
     return new ValidatorStub()
 }
 
-const makeFarmacia = (): FarmaciaModel => ({
-    id: 1,
-    logo: 'logo',
-    nome: 'nome',
-    cnpj: 'cnpj',
-    endereco: 'endereco',
-    horarioFuncionamento: 'horarioFuncionamento',
-    responsavel: 'responsavel',
-    telefone: 'telefone',
-    outros: 'outros'
-})
-
-const makeCriarFarmaciaSedeUseCase = (): CriarFarmaciaSedeUseCase => {
-    class CriarFarmaciaSedeUseCaseStub implements CriarFarmaciaSedeUseCase {
-        async criar(): Promise<void | Error> {
+const makeDeletarFarmaciaUseCase = (): DeletarFarmaciaUseCase => {
+    class DeletarFarmaciaUseCaseStub implements DeletarFarmaciaUseCase {
+        async deletar(): Promise<void | Error> {
             return new Promise(resolve => resolve(null))
         }
     }
-    return new CriarFarmaciaSedeUseCaseStub()
+    return new DeletarFarmaciaUseCaseStub()
 }
 
 const makeSut = (): SutTypes => {
     const validator = makeValidator()
-    const criarFarmaciaSedeUseCase = makeCriarFarmaciaSedeUseCase()
-    const sut = new CriarFarmaciaSedeController(validator, criarFarmaciaSedeUseCase)
+    const deletarFarmaciaUseCase = makeDeletarFarmaciaUseCase()
+    const sut = new DeletarFarmaciaController(validator, deletarFarmaciaUseCase)
     return {
         validator,
-        criarFarmaciaSedeUseCase,
+        deletarFarmaciaUseCase,
         sut
     }
 }
 
 
-const makeData = (): FarmaciaSedeModel => ({
-    farmacia: makeFarmacia(),
-})
-
 const makeRequest = (): HttpRequest => ({
-    body: makeData()
+    params: { id: 1 }
 })
 
 describe('CriarFarmaciaFilial Controller', () => {
@@ -68,7 +51,7 @@ describe('CriarFarmaciaFilial Controller', () => {
         const { sut, validator } = makeSut()
         const validateSpy = jest.spyOn(validator, 'validate')
         await sut.handle(makeRequest())
-        expect(validateSpy).toHaveBeenCalledWith(makeData())
+        expect(validateSpy).toHaveBeenCalledWith({ id: 1 })
     })
 
     test('Garantir que se o validate retornar uma exceção retornar um badRequest', async () => {
@@ -85,23 +68,23 @@ describe('CriarFarmaciaFilial Controller', () => {
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
 
-    test('Garantir que criar seja chamado com os valores corretos', async () => {
-        const { sut, criarFarmaciaSedeUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(criarFarmaciaSedeUseCase, 'criar')
+    test('Garantir que deletar seja chamado com os valores corretos', async () => {
+        const { sut, deletarFarmaciaUseCase } = makeSut()
+        const atualizarSpy = jest.spyOn(deletarFarmaciaUseCase, 'deletar')
         await sut.handle(makeRequest())
-        expect(atualizarSpy).toHaveBeenCalledWith(makeData())
+        expect(atualizarSpy).toHaveBeenCalledWith(1)
     })
 
-    test('Garantir que se o criar retornar uma exceção retornar um badRequest', async () => {
-        const { sut, criarFarmaciaSedeUseCase } = makeSut()
-        jest.spyOn(criarFarmaciaSedeUseCase, 'criar').mockImplementationOnce(() => { throw new Error() })
+    test('Garantir que se o deletar retornar uma exceção retornar um badRequest', async () => {
+        const { sut, deletarFarmaciaUseCase } = makeSut()
+        jest.spyOn(deletarFarmaciaUseCase, 'deletar').mockImplementationOnce(() => { throw new Error() })
         const httpResponse = await sut.handle(makeRequest())
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
 
-    test('Garantir que se tudo ocorrer corretamente retornar um creted', async () => {
+    test('Garantir que se tudo ocorrer corretamente retornar um noContent', async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeRequest())
-        await expect(httpResponse).toEqual(created())
+        await expect(httpResponse).toEqual(noContent())
     })
 })

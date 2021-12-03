@@ -91,7 +91,7 @@ describe('CriarFarmacia Controller', () => {
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
 
-    test('Garantir que buscar seja chamado com os valores corretos', async () => {
+    test('Garantir que criar seja chamado com os valores corretos', async () => {
         const { sut, criarFarmaciaUseCase } = makeSut()
         const atualizarSpy = jest.spyOn(criarFarmaciaUseCase, 'criar')
         await sut.handle(makeRequest())
