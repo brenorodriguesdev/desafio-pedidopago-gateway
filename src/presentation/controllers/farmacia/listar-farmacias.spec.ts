@@ -50,9 +50,9 @@ describe('ListarFarmacias Controller', () => {
 
     test('Garantir que listar seja chamado com os valores corretos', async () => {
         const { sut, listarFarmaciasUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(listarFarmaciasUseCase, 'listar')
+        const listarSpy = jest.spyOn(listarFarmaciasUseCase, 'listar')
         await sut.handle()
-        expect(atualizarSpy).toHaveBeenCalledWith()
+        expect(listarSpy).toHaveBeenCalledWith()
     })
 
     test('Garantir que se o buscar retornar uma exceção retornar um serverError', async () => {

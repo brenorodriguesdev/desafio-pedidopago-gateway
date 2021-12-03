@@ -88,9 +88,9 @@ describe('CriarFarmaciaFilial Controller', () => {
 
     test('Garantir que criar seja chamado com os valores corretos', async () => {
         const { sut, criarFarmaciaFilialUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(criarFarmaciaFilialUseCase, 'criar')
+        const criarSpy = jest.spyOn(criarFarmaciaFilialUseCase, 'criar')
         await sut.handle(makeRequest())
-        expect(atualizarSpy).toHaveBeenCalledWith(makeData())
+        expect(criarSpy).toHaveBeenCalledWith(makeData())
     })
 
     test('Garantir que se o criar retornar uma exceção retornar um badRequest', async () => {

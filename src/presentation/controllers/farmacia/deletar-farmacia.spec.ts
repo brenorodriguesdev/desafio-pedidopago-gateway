@@ -69,9 +69,9 @@ describe('DeletarFarmacia Controller', () => {
 
     test('Garantir que deletar seja chamado com os valores corretos', async () => {
         const { sut, deletarFarmaciaFilialUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(deletarFarmaciaFilialUseCase, 'deletar')
+        const deletarSpy = jest.spyOn(deletarFarmaciaFilialUseCase, 'deletar')
         await sut.handle(makeRequest())
-        expect(atualizarSpy).toHaveBeenCalledWith(1)
+        expect(deletarSpy).toHaveBeenCalledWith(1)
     })
 
     test('Garantir que se o deletar retornar uma exceção retornar um badRequest', async () => {

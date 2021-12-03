@@ -81,9 +81,9 @@ describe('BuscarFarmacia Controller', () => {
 
     test('Garantir que buscar seja chamado com os valores corretos', async () => {
         const { sut, buscarFarmaciaUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(buscarFarmaciaUseCase, 'buscar')
+        const buscarSpy = jest.spyOn(buscarFarmaciaUseCase, 'buscar')
         await sut.handle(makeRequest())
-        expect(atualizarSpy).toHaveBeenCalledWith(1)
+        expect(buscarSpy).toHaveBeenCalledWith(1)
     })
 
     test('Garantir que se o buscar retornar uma exceção retornar um badRequest', async () => {
