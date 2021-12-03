@@ -1,12 +1,11 @@
 import { CriarProdutoModel } from "../../../domain/models/produto/criar-produtos"
 import { IngredienteModel } from "../../../domain/models/produto/ingrediente"
 import { ProdutoModel, ProdutosModel } from "../../../domain/models/produto/produto"
-import { CriarProdutosUseCase, CriarProdutoUseCase } from "../../../domain/useCases/produto/criar-produtos"
+import { CriarProdutosUseCase } from "../../../domain/useCases/produto/criar-produtos"
 import { Validator } from "../../../validation/contracts/validator"
 import { HttpRequest } from "../../contracts/http"
 import { badRequest, ok } from "../../contracts/http-helper"
 import { MissingParamError } from "../../errors/missing-param-error"
-import { CriarProdutoController } from "./criar-produto"
 import { CriarProdutosController } from "./criar-produtos"
 
 interface SutTypes {
