@@ -1,14 +1,14 @@
-import { DeletarFarmaciaFilialUseCase } from "../../../domain/useCases/farmacia/deletar-farmaciaFilial"
+import { DeletarFarmaciaUseCase } from "../../../domain/useCases/farmacia/deletar-farmacia"
 import { Validator } from "../../../validation/contracts/validator"
 import { HttpRequest } from "../../contracts/http"
 import { badRequest, noContent } from "../../contracts/http-helper"
-import { DeletarFarmaciaFilialController } from "./deletar-farmaciaFilial"
+import { DeletarFarmaciaController } from "./deletar-farmacia"
 
 
 interface SutTypes {
     validator: Validator
-    deletarFarmaciaFilialUseCase: DeletarFarmaciaFilialUseCase
-    sut: DeletarFarmaciaFilialController
+    deletarFarmaciaUseCase: DeletarFarmaciaUseCase
+    sut: DeletarFarmaciaController
 }
 
 const makeValidator = (): Validator => {
@@ -20,22 +20,22 @@ const makeValidator = (): Validator => {
     return new ValidatorStub()
 }
 
-const makeDeletarFarmaciaFilialUseCase = (): DeletarFarmaciaFilialUseCase => {
-    class DeletarFarmaciaFilialUseCaseStub implements DeletarFarmaciaFilialUseCase {
+const makeDeletarFarmaciaUseCase = (): DeletarFarmaciaUseCase => {
+    class DeletarFarmaciaUseCaseStub implements DeletarFarmaciaUseCase {
         async deletar(): Promise<void | Error> {
             return new Promise(resolve => resolve(null))
         }
     }
-    return new DeletarFarmaciaFilialUseCaseStub()
+    return new DeletarFarmaciaUseCaseStub()
 }
 
 const makeSut = (): SutTypes => {
     const validator = makeValidator()
-    const deletarFarmaciaFilialUseCase = makeDeletarFarmaciaFilialUseCase()
-    const sut = new DeletarFarmaciaFilialController(validator, deletarFarmaciaFilialUseCase)
+    const deletarFarmaciaUseCase = makeDeletarFarmaciaUseCase()
+    const sut = new DeletarFarmaciaController(validator, deletarFarmaciaUseCase)
     return {
         validator,
-        deletarFarmaciaFilialUseCase,
+        deletarFarmaciaUseCase,
         sut
     }
 }
@@ -45,7 +45,7 @@ const makeRequest = (): HttpRequest => ({
     params: { id: 1 }
 })
 
-describe('DeletarFarmacia Controller', () => {
+describe('DeletarFarmaciaFilial Controller', () => {
     test('Garantir que validate seja chamado com os valores corretos', async () => {
         const { sut, validator } = makeSut()
         const validateSpy = jest.spyOn(validator, 'validate')
@@ -68,15 +68,15 @@ describe('DeletarFarmacia Controller', () => {
     })
 
     test('Garantir que deletar seja chamado com os valores corretos', async () => {
-        const { sut, deletarFarmaciaFilialUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(deletarFarmaciaFilialUseCase, 'deletar')
+        const { sut, deletarFarmaciaUseCase } = makeSut()
+        const atualizarSpy = jest.spyOn(deletarFarmaciaUseCase, 'deletar')
         await sut.handle(makeRequest())
         expect(atualizarSpy).toHaveBeenCalledWith(1)
     })
 
     test('Garantir que se o deletar retornar uma exceção retornar um badRequest', async () => {
-        const { sut, deletarFarmaciaFilialUseCase } = makeSut()
-        jest.spyOn(deletarFarmaciaFilialUseCase, 'deletar').mockImplementationOnce(() => { throw new Error() })
+        const { sut, deletarFarmaciaUseCase } = makeSut()
+        jest.spyOn(deletarFarmaciaUseCase, 'deletar').mockImplementationOnce(() => { throw new Error() })
         const httpResponse = await sut.handle(makeRequest())
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
