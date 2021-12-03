@@ -1,9 +1,8 @@
 import { AtualizarProdutoUseCase } from "../../../domain/useCases/produto/atualizar-produto"
-import { CriarProdutoUseCase } from "../../../domain/useCases/produto/criar-produtos"
 import { Validator } from "../../../validation/contracts/validator"
 import { Controller } from "../../contracts/controller"
 import { HttpRequest, HttpResponse } from "../../contracts/http"
-import { badRequest, ok } from "../../contracts/http-helper"
+import { badRequest, noContent } from "../../contracts/http-helper"
 
 export class AtualizarProdutoController implements Controller {
     constructor(private readonly validator: Validator, private readonly atualizarProdutoUseCase: AtualizarProdutoUseCase) { }
@@ -25,7 +24,7 @@ export class AtualizarProdutoController implements Controller {
                 outros
             } = httpRequest.body
 
-            const produto = await this.atualizarProdutoUseCase.atualizar({
+           await this.atualizarProdutoUseCase.atualizar({
                 id,
                 thumbnail,
                 nome,
@@ -36,7 +35,7 @@ export class AtualizarProdutoController implements Controller {
                 outros
             })
 
-            return ok(produto)
+            return noContent()
         } catch (error) {
             return badRequest(error)
         }
