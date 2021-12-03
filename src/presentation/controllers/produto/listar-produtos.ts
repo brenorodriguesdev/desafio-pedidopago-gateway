@@ -10,7 +10,6 @@ export class ListarProdutosController implements Controller {
             const produtos = await this.listarProdutosUseCase.listar()
             return ok(produtos)
         } catch (error) {
-            console.log(error.message)
             return serverError()
         }
     }
