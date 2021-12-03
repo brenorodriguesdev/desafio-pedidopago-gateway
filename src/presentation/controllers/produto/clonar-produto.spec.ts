@@ -1,15 +1,15 @@
 import { IngredienteModel } from "../../../domain/models/produto/ingrediente"
 import { ProdutoModel } from "../../../domain/models/produto/produto"
-import { BuscarProdutoUseCase } from "../../../domain/useCases/produto/buscar-produto"
+import { ClonarProdutoUseCase } from "../../../domain/useCases/produto/clonar-produto"
 import { Validator } from "../../../validation/contracts/validator"
 import { HttpRequest } from "../../contracts/http"
 import { badRequest, ok } from "../../contracts/http-helper"
-import { BuscarProdutoController } from "./buscar-produto"
+import { ClonarProdutoController } from "./clonar-produto"
 
 interface SutTypes {
     validator: Validator
-    buscarProdutoUseCase: BuscarProdutoUseCase
-    sut: BuscarProdutoController
+    clonarProdutoUseCase: ClonarProdutoUseCase
+    sut: ClonarProdutoController
 }
 
 const makeIngrediente = (id: number): IngredienteModel => ({
@@ -37,35 +37,35 @@ const makeValidator = (): Validator => {
     return new ValidatorStub()
 }
 
-const makeBuscarProdutoUseCase = (): BuscarProdutoUseCase => {
-    class BuscarProdutoUseCaseStub implements BuscarProdutoUseCase {
-        async buscar(): Promise<ProdutoModel | Error> {
+const makeClonarProdutoUseCase = (): ClonarProdutoUseCase => {
+    class ClonarProdutoUseCaseStub implements ClonarProdutoUseCase {
+        async clonar(): Promise<ProdutoModel | Error> {
             return new Promise(resolve => resolve(makeProduto()))
         }
     }
-    return new BuscarProdutoUseCaseStub()
+    return new ClonarProdutoUseCaseStub()
 }
 
 
 const makeSut = (): SutTypes => {
     const validator = makeValidator()
-    const buscarProdutoUseCase = makeBuscarProdutoUseCase()
+    const clonarProdutoUseCase = makeClonarProdutoUseCase()
 
-    const sut = new BuscarProdutoController(validator, buscarProdutoUseCase)
+    const sut = new ClonarProdutoController(validator, clonarProdutoUseCase)
     return {
         validator,
-        buscarProdutoUseCase,
+        clonarProdutoUseCase,
         sut
     }
 }
 
 const makeRequest = (): HttpRequest => ({
-    params: {
+    body: {
         id: 1
     }
 })
 
-describe('BuscarProduto controller', () => {
+describe('ClonarProduto controller', () => {
     test('Garantir que validate seja chamado com os valores corretos', async () => {
         const { sut, validator } = makeSut()
         const validateSpy = jest.spyOn(validator, 'validate')
@@ -87,16 +87,16 @@ describe('BuscarProduto controller', () => {
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
 
-      test('Garantir que buscar seja chamado com a id correta', async () => {
-        const { sut, buscarProdutoUseCase } = makeSut()
-        const buscarSpy = jest.spyOn(buscarProdutoUseCase, 'buscar')
+      test('Garantir que clonar seja chamado com a id correta', async () => {
+        const { sut, clonarProdutoUseCase } = makeSut()
+        const clonarSpy = jest.spyOn(clonarProdutoUseCase, 'clonar')
         await sut.handle(makeRequest())
-        expect(buscarSpy).toHaveBeenCalledWith(1)
+        expect(clonarSpy).toHaveBeenCalledWith(1)
     })
 
     test('Garantir que se o buscar retornar uma exceção retornar um badRequest', async () => {
-        const { sut, buscarProdutoUseCase } = makeSut()
-        jest.spyOn(buscarProdutoUseCase, 'buscar').mockImplementationOnce(() => { throw new Error() })
+        const { sut, clonarProdutoUseCase } = makeSut()
+        jest.spyOn(clonarProdutoUseCase, 'clonar').mockImplementationOnce(() => { throw new Error() })
         const httpResponse = await sut.handle(makeRequest())
         await expect(httpResponse).toEqual(badRequest(new Error()))
       })

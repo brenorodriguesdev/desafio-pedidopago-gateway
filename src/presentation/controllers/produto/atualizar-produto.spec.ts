@@ -72,6 +72,13 @@ describe('AtualizarProduto Controller', () => {
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
 
+    test('Garantir que se o validate retornar um error retornar um badRequest', async () => {
+        const { sut, validator } = makeSut()
+        jest.spyOn(validator, 'validate').mockImplementationOnce(() => { return new Error() })
+        const httpResponse = await sut.handle(makeRequest())
+        await expect(httpResponse).toEqual(badRequest(new Error()))
+    })
+
     test('Garantir que atualizar seja chamado com os valores corretos', async () => {
         const { sut, atualizarProdutoUseCase } = makeSut()
         const atualizarSpy = jest.spyOn(atualizarProdutoUseCase, 'atualizar')
