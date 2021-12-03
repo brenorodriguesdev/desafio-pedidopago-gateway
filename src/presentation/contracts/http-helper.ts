@@ -25,9 +25,3 @@ export const created = (): HttpResponse => ({
     data: null,
     statusCode: 201
 })
-
-
-export const notFound = (): HttpResponse => ({
-    data: null,
-    statusCode: 201
-})
