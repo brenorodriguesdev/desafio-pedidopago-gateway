@@ -1,16 +1,16 @@
-import { CriarFarmaciaFilialModel } from "../../../domain/models/farmacia/criar-farmaciaFilial"
 import { FarmaciaModel } from "../../../domain/models/farmacia/farmacia"
-import { CriarFarmaciaFilialUseCase } from "../../../domain/useCases/farmacia/criar-farmaciaFilial"
+import { FarmaciaSedeModel } from "../../../domain/models/farmacia/farmaciaSede"
+import { CriarFarmaciaSedeUseCase } from "../../../domain/useCases/farmacia/criar-farmaciaSede"
 import { Validator } from "../../../validation/contracts/validator"
 import { HttpRequest } from "../../contracts/http"
 import { badRequest, created } from "../../contracts/http-helper"
-import { CriarFarmaciaFilialController } from "./criar-farmaciaFilial"
+import { CriarFarmaciaSedeController } from "./criar-farmaciaSede"
 
 
 interface SutTypes {
     validator: Validator
-    criarFarmaciaFilialUseCase: CriarFarmaciaFilialUseCase
-    sut: CriarFarmaciaFilialController
+    criarFarmaciaSedeUseCase: CriarFarmaciaSedeUseCase
+    sut: CriarFarmaciaSedeController
 }
 
 const makeValidator = (): Validator => {
@@ -34,30 +34,29 @@ const makeFarmacia = (): FarmaciaModel => ({
     outros: 'outros'
 })
 
-const makeCriarFarmaciaFilialUseCase = (): CriarFarmaciaFilialUseCase => {
-    class CriarFarmaciaFilialUseCaseStub implements CriarFarmaciaFilialUseCase {
+const makeCriarFarmaciaSedeUseCase = (): CriarFarmaciaSedeUseCase => {
+    class CriarFarmaciaSedeUseCaseStub implements CriarFarmaciaSedeUseCase {
         async criar(): Promise<void | Error> {
             return new Promise(resolve => resolve(null))
         }
     }
-    return new CriarFarmaciaFilialUseCaseStub()
+    return new CriarFarmaciaSedeUseCaseStub()
 }
 
 const makeSut = (): SutTypes => {
     const validator = makeValidator()
-    const criarFarmaciaFilialUseCase = makeCriarFarmaciaFilialUseCase()
-    const sut = new CriarFarmaciaFilialController(validator, criarFarmaciaFilialUseCase)
+    const criarFarmaciaSedeUseCase = makeCriarFarmaciaSedeUseCase()
+    const sut = new CriarFarmaciaSedeController(validator, criarFarmaciaSedeUseCase)
     return {
         validator,
-        criarFarmaciaFilialUseCase,
+        criarFarmaciaSedeUseCase,
         sut
     }
 }
 
 
-const makeData = (): CriarFarmaciaFilialModel => ({
+const makeData = (): FarmaciaSedeModel => ({
     farmacia: makeFarmacia(),
-    idFarmaciaSede: 1
 })
 
 const makeRequest = (): HttpRequest => ({
@@ -87,15 +86,15 @@ describe('CriarFarmaciaFilial Controller', () => {
     })
 
     test('Garantir que buscar seja chamado com os valores corretos', async () => {
-        const { sut, criarFarmaciaFilialUseCase } = makeSut()
-        const atualizarSpy = jest.spyOn(criarFarmaciaFilialUseCase, 'criar')
+        const { sut, criarFarmaciaSedeUseCase } = makeSut()
+        const atualizarSpy = jest.spyOn(criarFarmaciaSedeUseCase, 'criar')
         await sut.handle(makeRequest())
         expect(atualizarSpy).toHaveBeenCalledWith(makeData())
     })
 
     test('Garantir que se o criar retornar uma exceção retornar um badRequest', async () => {
-        const { sut, criarFarmaciaFilialUseCase } = makeSut()
-        jest.spyOn(criarFarmaciaFilialUseCase, 'criar').mockImplementationOnce(() => { throw new Error() })
+        const { sut, criarFarmaciaSedeUseCase } = makeSut()
+        jest.spyOn(criarFarmaciaSedeUseCase, 'criar').mockImplementationOnce(() => { throw new Error() })
         const httpResponse = await sut.handle(makeRequest())
         await expect(httpResponse).toEqual(badRequest(new Error()))
     })
